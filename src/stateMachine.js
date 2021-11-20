@@ -17,4 +17,4 @@ var visualize = require('javascript-state-machine/lib/visualize');
     }
   });
 
-  visualize(fsm)
+  visualize(fsm);
