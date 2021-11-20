@@ -1,5 +1,5 @@
 var StateMachine = require('javascript-state-machine');
-  var visualize = require('javascript-state-machine/lib/visualize');
+var visualize = require('javascript-state-machine/lib/visualize');
 
   var fsm = new StateMachine({
     init: 'solid',
@@ -18,4 +18,3 @@ var StateMachine = require('javascript-state-machine');
   });
 
   visualize(fsm)
-

@@ -4,11 +4,7 @@ import stateMachine from './stateMachine.js';
 
 function App() {
   return (
-    <div className="App-header">
-      <header className="App-header">
 	<stateMachine />
-      </header>
-    </div>
   );
 }
 
