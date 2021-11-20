@@ -5,7 +5,6 @@ function App() {
   return (
     <div className="rebergram">
       <header className="rebergram">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
 		Hi!
         </p>
