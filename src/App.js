@@ -1,49 +1,67 @@
 import React, { useReducer, useState } from 'react';
 import './App.css';
-
-const formReducer = (state, event) => {
- return {
-   ...state,
-   [event.name]: event.value
- }
-}
+import { Machine } from "xstate";
+import { useMachine } from "@xstate/react";
 
 function App() {
-  const [formData, setFormData] = useReducer(formReducer, {});
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    setSubmitting(true);
-
-    setTimeout(() => {
-      setSubmitting(false);
-    }, 3000);
-  }
-
-  const handleChange = event => {
-    setFormData({
-      name: event.target.name,
-      value: event.target.value,
-    });
-  }
-
-  return(
-    <div className="wrapper">
-      <h1>Reber Grammar - Deterrministischer Endlicher Automat</h1>
-      {submitting &&
-        <div>Submtting Form...</div>
-      }
-      <form onSubmit={handleSubmit}>
-        <fieldset>
-          <label>
-            <p>Name</p>
-            <input name="name" onChange={handleChange}/> <button type="submit">Submit</button>
-          </label>
-        </fieldset>
-      </form>
-    </div>
-  )
-}
-
+const Light = () => {
+const lightMachine = Machine({
+ id: 'lightMachine',
+ initial: 'green',
+ context: {
+   updated: 0
+ },
+ states: {
+   green: {
+     on: {
+       yellow: {
+         target: 'yellow',
+         actions: 'updatedAction'
+       }
+     }
+   },
+   yellow: {
+     on: {
+       red: {
+         target: 'red',
+         actions: 'updatedAction'
+       }
+     }
+   },
+   red: {
+     on: {
+       GREEN: {
+         target: 'green',
+         actions: 'updatedAction'
+       }
+     }
+   }
+ }
+});
+const updatedAction: any = Object.assign({
+ updated: (context: any, event: any) => context.updated + 1
+})
+const [current, send] = useMachine(lightMachine, {
+ actions: { updatedAction }
+});
+return (
+<div>
+<h1>Light traffic</h1>
+<h1>Updated: {current.context.updated} times</h1>
+{current.matches('green') ? (
+<div style={{ width: 60, height: 60, borderRadius: "50%", background: "green", marginTop: 10 }} />
+): null}
+{current.matches('yellow') ? (
+<div style={{ width: 60, height: 60, borderRadius: "50%", background: "yellow", marginTop: 10 }} />
+): null}
+{current.matches('red') ? (
+<div style={{ width: 60, height: 60, borderRadius: "50%", background: "red", marginTop: 10 }} />
+): null}
+<button disabled={!current.matches('green')} onClick={() => send('YELLOW')}>YELLOW</button>
+<button disabled={!current.matches('yellow')} onClick={() => send('RED')}>RED</button>
+<button disabled={!current.matches('red')} onClick={() => send('GREEN')}>GREEN</button>
+</div>
+);
+};
+};
 export default App;
