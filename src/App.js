@@ -30,7 +30,7 @@ function App() {
 
   return(
     <div className="wrapper">
-      <h1>How About Them Apples</h1>
+      <h1>Reber Grammar - Deterrministischer Endlicher Automat</h1>
       {submitting &&
         <div>Submtting Form...</div>
       }
@@ -38,10 +38,9 @@ function App() {
         <fieldset>
           <label>
             <p>Name</p>
-            <input name="name" onChange={handleChange}/>
+            <input name="name" onChange={handleChange}/> <button type="submit">Submit</button>
           </label>
         </fieldset>
-        <button type="submit">Submit</button>
       </form>
     </div>
   )
