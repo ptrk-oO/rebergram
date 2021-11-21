@@ -1,20 +1,50 @@
-import logo from './logo.svg';
+import React, { useReducer, useState } from 'react';
 import './App.css';
 
-  var StateMachine = require('javascript-state-machine');
-  var visualize = require('javascript-state-machine/lib/visualize');
-  var fsm = new StateMachine({
-    init: 'closed',
-    transitions: [
-      { name: 'open',  from: 'closed', to: 'open',   dot: { color: 'blue', headport: 'n', tailport: 'n' } },
-      { name: 'close', from: 'open',   to: 'closed', dot: { color: 'red',  headport: 's', tailport: 's' } }
-    ]
-  });
+const formReducer = (state, event) => {
+ return {
+   ...state,
+   [event.name]: event.value
+ }
+}
 
 function App() {
-  return (
-	visualize(fsm)
-  );
+  const [formData, setFormData] = useReducer(formReducer, {});
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    setSubmitting(true);
+
+    setTimeout(() => {
+      setSubmitting(false);
+    }, 3000);
+  }
+
+  const handleChange = event => {
+    setFormData({
+      name: event.target.name,
+      value: event.target.value,
+    });
+  }
+
+  return(
+    <div className="wrapper">
+      <h1>How About Them Apples</h1>
+      {submitting &&
+        <div>Submtting Form...</div>
+      }
+      <form onSubmit={handleSubmit}>
+        <fieldset>
+          <label>
+            <p>Name</p>
+            <input name="name" onChange={handleChange}/>
+          </label>
+        </fieldset>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  )
 }
 
 export default App;
